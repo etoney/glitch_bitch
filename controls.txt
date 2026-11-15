@@ -1,0 +1,216 @@
+===============================================================================
+  GLITCH BITCH  //  CONTROLS QUICK REFERENCE
+  Castle Danger Music Company  //  Press. Hold. Destroy.
+===============================================================================
+
+Glitch Bitch is an insert effect. Put it on any track (drums, vocals, a bus,
+the whole mix) like you would an EQ or a reverb.
+
+The idea: ARM the effects you want, then hit THE BUTTON. Everything armed
+fires at once. Every glitch is also recorded as a WAV file, with a little
+clean audio before and after it, and lands in the CAPTURE TRAY so you can
+drag it onto its own track.
+
+Tip: double-click a value readout under a knob to type an exact number.
+Double-click a knob to reset it.
+
+No latency: Glitch Bitch doesn't delay your audio.
+
+
+-------------------------------------------------------------------------------
+HEADER
+-------------------------------------------------------------------------------
+  THE SCREEN (top left)
+      Your output scrolling by. It tears apart while the glitch is firing,
+      and shows WAITING FOR THE GRID when SNAP is holding a press back.
+
+  PRESET MENU (top right)
+      17 factory glitches, plus your own saved presets under USER PRESETS.
+      The < and > arrows step through both lists.
+
+      Init (Stutter 1/16)  Chopper 1/32       Gate Keeper        Beat Repeat 1/8
+      Machine Gun          Sinking Repeat     Rising Panic       Tape Kill
+      Spin Cycle           Power Up           Backmask           Scatterbrain
+      Broken CD            8-Bit Meltdown     Frozen Scream      Death Dive
+      Total Destruction
+
+      Presets change the effects and SNAP. They never touch THE BUTTON, the
+      HOLD/LATCH mode, the capture settings or the OUTPUT level.
+
+  SAVE PRESET... / DELETE
+      User presets are .glitchbitch files you can back up or share:
+        macOS:   ~/Library/Application Support/Castle Danger/Glitch Bitch/Presets/
+        Windows: %APPDATA%\Castle Danger\Glitch Bitch\Presets\
+
+
+-------------------------------------------------------------------------------
+THE BUTTON  (left)
+-------------------------------------------------------------------------------
+  THE BUTTON   Fires every ARMED effect. It glows while it's firing.
+
+  MODE         HOLD:  fires while you hold the button down. Let go to stop.
+               LATCH: click once to start, click again to stop.
+
+  SNAP TO GRID Off, 1/16, 1/8, 1/4, 1/2, 1 Bar.
+               With SNAP on, a press waits for the next grid line before it
+               fires, and a release waits for the next grid line before it
+               stops. Even a quick tap fires for one full grid step. This
+               keeps glitches on the beat, and it makes every captured clip
+               start exactly on a grid line (see CAPTURE TRAY).
+               Snap only works while the song is playing.
+
+  ARMED        Lists what will fire when you hit the button.
+
+  Recording and controlling the button from your DAW:
+      THE BUTTON is a normal plugin parameter called "Glitch (The Button)".
+        - Record it: put the track's automation in Touch, Latch or Write
+          mode, play, and press the button. Your presses become automation
+          you can edit and play back.
+        - Draw it: draw the "Glitch (The Button)" automation lane by hand.
+        - Map it to a pad, key or footswitch: use your DAW's controller
+          mapping (in Fender Studio Pro: Control Link / "Learn").
+      Every ARM switch is a parameter too, so you can change which effects
+      fire from one glitch to the next.
+
+
+-------------------------------------------------------------------------------
+THE EFFECTS
+-------------------------------------------------------------------------------
+Each plate has an ARM switch (top right). Armed plates have a red outline
+and light up while the glitch fires. Arm as many as you like. They run in
+this order:
+
+  Freeze > Repeat > Reverse > Scatter > Dive > Crush > Stutter > Dry/Wet
+  > Tape Stop / Tape Start > Output
+
+  STUTTER
+      A 16-step chopper locked to your song's tempo. LIT STEPS CUT THE
+      VOLUME. Click steps to light them. The current step glows yellow.
+      SPEED    Step size: 1/2, 1/4, 1/4T, 1/8, 1/8T, 1/16, 1/16T, 1/32,
+               1/32T, 1/64 (T = triplet).
+      STEPS    Pattern length, 1-16 (steps past it are dimmed).
+      DEPTH    How far the volume drops on a lit step.
+      SMOOTH   Edge softness: low = hard chop, high = pulsing.
+
+  REPEAT
+      Grabs one slice the moment the glitch fires (you hear it go by once)
+      and then loops it: "s-s-s-stutter".
+      LENGTH   Slice size, 1/2 to 1/64.
+      DROP     Pitch change per repeat. Negative = sinking and dying,
+               positive = rising panic.
+
+  REVERSE
+      Plays each slice backwards right after it goes by.
+      LENGTH   Slice size, 1/2 to 1/64.
+
+  SCATTER
+      Every slice, maybe jumps back to a random earlier slice, sometimes
+      backwards, sometimes an octave down or up. Broken-CD territory.
+      SLICE    Slice size, 1/2 to 1/64.
+      CHAOS    How often it jumps (0 = never, 100% = every slice) and how
+               often a jump gets reversed or pitched.
+      RANGE    How far back it can jump, 1 to 8 beats.
+
+  CRUSH
+      BITS     Bit depth, 16 (clean) down to 2 (destroyed).
+      RATE     Sample rate, 24 kHz down to 400 Hz (aliasing, robot grit).
+
+  FREEZE
+      Holds the moment as a drifting, slightly detuned drone under the
+      sound.
+      SIZE     Grain length: short = buzzy, long = smeared.
+      MIX      How loud the frozen sound is.
+
+  DIVE
+      The pitch slides down (or up) while the glitch is held, then slides
+      back home after you let go.
+      AMOUNT   -24 to +24 semitones.
+      TIME     How long the slide takes.
+
+  TAPE STOP
+      Everything slows down and drops in pitch until it grinds to silence.
+      TIME     How long it takes to stop.
+      CURVE    Low = drops fast then drags out, high = holds speed then
+               crashes.
+      Let go and it snaps straight back (unless TAPE START is armed).
+
+  TAPE START
+      Spins up from a dead stop to full speed.
+      TIME / CURVE   Same idea as Tape Stop, in reverse.
+
+      TAPE STOP + TAPE START both armed: the tape stops when you press and
+      spins back up when you let go. That's the classic DJ "power down,
+      power up".
+
+  IN / OUT
+      DRY/WET  Blend of your untouched track and the glitched one (Tape
+               Stop/Start always act on the whole sound).
+      OUTPUT   Final level. Meters show input and output.
+
+
+===============================================================================
+CAPTURE TRAY  (bottom)
+===============================================================================
+Every time THE BUTTON fires, Glitch Bitch records what comes out of it as a
+24-bit WAV file and drops it in the tray. The newest clip is on the left.
+A red CAPTURING tile shows while a clip is being recorded.
+
+  CAPTURE    On/off switch for recording clips.
+  PRE        Clean audio kept BEFORE the glitch: Off, 1/16, 1/8, 1/4, 1/2,
+             1 Bar, 2 Bars.
+  POST       Audio kept AFTER the glitch and its tails (tape spin-up,
+             dive sliding home) finish. Same choices.
+             The extra audio gives you room to crossfade the clip with the
+             original track.
+  FOLDER     Opens the folder the WAV files are saved in:
+               macOS:   ~/Music/Glitch Bitch Captures/<date>/
+               Windows: Music\Glitch Bitch Captures\<date>\
+             Files are named after the track, e.g.
+               "Drums - Glitch 007 - Bar 33.1.wav"
+             (the track name shows up in DAWs that share it with plugins).
+  CLEAR      Empties the tray. You choose whether to keep or delete the files.
+  < >        Page through older clips (the tray remembers the last 48).
+
+  Each clip shows its number, its length and where it STARTS in your song:
+  "BAR 33 . 1" means bar 33, beat 1. Clips captured with the song stopped
+  say TRANSPORT STOPPED.
+
+  Drag a clip out of the tray and drop it on a track in your DAW.
+  Right-click a clip to show it in Finder/Explorer, remove it from the tray
+  (the file stays on disk) or delete the file.
+
+  If dragging out of the plugin window doesn't work in your DAW, click
+  FOLDER and drag the WAV from Finder/Explorer instead. That always works.
+
+
+-------------------------------------------------------------------------------
+BOUNCING GLITCHES TO A NEW TRACK  (Fender Studio Pro)
+-------------------------------------------------------------------------------
+  1. Put Glitch Bitch on the track. Arm your effects, set SNAP (1/4 is a
+     good start) and set PRE and POST (1/4 each is a good start).
+  2. Play the song and hit THE BUTTON where you want glitches. Or record
+     the button as automation first and let playback do the pressing.
+  3. Each glitch lands in the tray, labelled with the bar and beat it
+     starts on.
+  4. Make a new audio track. Turn Snap ON in Studio Pro.
+  5. Drag the clip from the tray onto the new track, at the bar and beat
+     on its tile. With SNAP and PRE both on in Glitch Bitch, the clip starts
+     exactly on that grid line, so it snaps into place.
+  6. On the original track, turn the glitch off (bypass Glitch Bitch, or
+     delete the button automation) and cut or fade out the original audio
+     under the glitch. Use the PRE/POST overlap for crossfades.
+
+  Any other DAW works the same way: drag the clip to the bar on its tile.
+
+  Extra for DAWs that read Broadcast WAV timestamps:
+     Every clip also stores where it came from in the song (a Broadcast
+     WAV "time reference"). In REAPER, drop the clip anywhere and use
+     Item > "Move to source preferred position" to put it back exactly
+     where it was captured. Other DAWs call this "spot to original time"
+     or "move to origin".
+
+  Note: if snap is off, clips start wherever you pressed, so the tile
+  shows an offset ("BAR 33 . 1 +2/16"). Line those up by ear, or use the
+  timestamp trick above.
+
+===============================================================================

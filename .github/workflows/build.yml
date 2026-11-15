@@ -1,0 +1,68 @@
+name: Build Glitch Bitch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      - name: DSP tests
+        shell: bash
+        run: |
+          cmake --build build --config Release --target glitchbitch_render
+          EXE=$(find build -maxdepth 3 \( -name glitchbitch_render -o -name glitchbitch_render.exe \) -type f | head -1)
+          mkdir -p test-out && "$EXE" test-out
+      - name: Build
+        run: cmake --build build --config Release --target GlitchBitch_VST3 GlitchBitch_Standalone
+      - name: Build AU (macOS)
+        if: runner.os == 'macOS'
+        run: cmake --build build --config Release --target GlitchBitch_AU
+      - name: Package release zip (same layout as the site downloads)
+        shell: bash
+        run: |
+          VER=$(sed -n 's/^project(GLITCHBITCH VERSION \([0-9.]*\)).*/\1/p' CMakeLists.txt)
+          OS=$([ "$RUNNER_OS" = "macOS" ] && echo macOS || echo Windows)
+          PKG="GlitchBitch-${OS}"
+          ZIP="GlitchBitch-v${VER}-${OS}.zip"
+          R=build/GlitchBitch_artefacts/Release
+          mkdir -p "pkg/$PKG/VST3" "pkg/$PKG/Standalone"
+          cp readme.txt controls.txt LICENSE.txt THIRD-PARTY-NOTICES.txt "pkg/$PKG/"
+          cp -R "$R/VST3/Glitch Bitch.vst3" "pkg/$PKG/VST3/"
+          if [ "$OS" = "macOS" ]; then
+            mkdir -p "pkg/$PKG/AU" && cp -R "$R/AU/Glitch Bitch.component" "pkg/$PKG/AU/"
+            cp -R "$R/Standalone/Glitch Bitch.app" "pkg/$PKG/Standalone/"
+            (cd pkg && ditto -c -k --sequesterRsrc --keepParent "$PKG" "../$ZIP")
+          else
+            cp "$R/Standalone/Glitch Bitch.exe" "pkg/$PKG/Standalone/"
+            (cd pkg && 7z a -tzip -mx=9 "../$ZIP" "$PKG" > /dev/null)   # 7z writes forward-slash paths
+          fi
+          ls -la "$ZIP"
+          BR="downloads-$(echo $OS | tr 'A-Z' 'a-z')"
+          mkdir -p /tmp/dl && cp "$ZIP" /tmp/dl/ && cd /tmp/dl && git init -q -b "$BR" && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "$ZIP for ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "$BR"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GlitchBitch-${{ runner.os }}
+          path: |
+            readme.txt
+            controls.txt
+            LICENSE.txt
+            THIRD-PARTY-NOTICES.txt
+            build/GlitchBitch_artefacts/Release/VST3
+            build/GlitchBitch_artefacts/Release/AU
+            build/GlitchBitch_artefacts/Release/Standalone
