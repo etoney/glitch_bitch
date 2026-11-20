@@ -20,13 +20,13 @@ struct CapturedClip
     juce::String positionText() const;   // "BAR 33 . 2" or "TRANSPORT STOPPED"
 };
 
-class GlitchBitchProcessor;
+class GlitchWitchProcessor;
 
 // Background thread that turns the capture ring into WAV files
 class CaptureWriter : public juce::Thread
 {
 public:
-    explicit CaptureWriter (GlitchBitchProcessor& p) : juce::Thread ("Glitch Bitch capture"), owner (p) {}
+    explicit CaptureWriter (GlitchWitchProcessor& p) : juce::Thread ("Glitch Witch capture"), owner (p) {}
     void run() override;
     void setSampleRate (double s) { sr = s; }
     void queueLoad (const juce::File& f) { const juce::ScopedLock sl (loadLock); toLoad.add (f); notify(); }
@@ -37,7 +37,7 @@ private:
     void loadExisting();
     juce::File makeFileFor (const gb::CaptureEvent&);
 
-    GlitchBitchProcessor& owner;
+    GlitchWitchProcessor& owner;
     double sr = 48000;
     std::unique_ptr<juce::AudioFormatWriter> writer;
     CapturedClip current;
@@ -49,11 +49,11 @@ private:
     std::vector<float> scratchL, scratchR;
 };
 
-class GlitchBitchProcessor : public juce::AudioProcessor
+class GlitchWitchProcessor : public juce::AudioProcessor
 {
 public:
-    GlitchBitchProcessor();
-    ~GlitchBitchProcessor() override;
+    GlitchWitchProcessor();
+    ~GlitchWitchProcessor() override;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override {}
@@ -63,7 +63,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "Glitch Bitch"; }
+    const juce::String getName() const override { return "Glitch Witch"; }
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
@@ -126,5 +126,5 @@ private:
     std::atomic<int> clipCounter { 0 };
     float scopeAcc = 0; int scopeCount = 0;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GlitchBitchProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GlitchWitchProcessor)
 };

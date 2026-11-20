@@ -1,8 +1,8 @@
-# Glitch Bitch: Press. Hold. Destroy.
+# Glitch Witch: Press. Hold. Destroy.
 
 A Castle Danger Music Company insert effect (VST3 / AU / Standalone, built with JUCE). Arm the effects you want, hit **THE BUTTON**, and everything armed fires at once. Every glitch is also captured as a WAV clip, with pre-roll and post-roll, in a tray you can drag straight onto a new track.
 
-![Glitch Bitch](docs/glitch-bitch-interface.png)
+![Glitch Witch](docs/glitch-bitch-interface.png)
 
 ## The Button
 - **Hold** mode fires while held. **Latch** mode clicks on and off.
@@ -26,10 +26,10 @@ Chain order: Freeze → Repeat → Reverse → Scatter → Dive → Crush → St
 
 Every engage, release and slice edge is crossfaded to avoid clicks. No latency.
 
-**17 factory presets:** Init (Stutter 1/16), Chopper 1/32, Gate Keeper, Beat Repeat 1/8, Machine Gun, Sinking Repeat, Rising Panic, Tape Kill, Spin Cycle, Power Up, Backmask, Scatterbrain, Broken CD, 8-Bit Meltdown, Frozen Scream, Death Dive, Total Destruction. User presets are `.glitchbitch` files in `Application Support/Castle Danger/Glitch Bitch/Presets/` (macOS) or `%APPDATA%\Castle Danger\Glitch Bitch\Presets\` (Windows).
+**17 factory presets:** Init (Stutter 1/16), Chopper 1/32, Gate Keeper, Beat Repeat 1/8, Machine Gun, Sinking Repeat, Rising Panic, Tape Kill, Spin Cycle, Power Up, Backmask, Scatterbrain, Broken CD, 8-Bit Meltdown, Frozen Scream, Death Dive, Total Destruction. User presets are `.glitchwitch` files in `Application Support/Castle Danger/Glitch Witch/Presets/` (macOS) or `%APPDATA%\Castle Danger\Glitch Witch\Presets\` (Windows).
 
 ## Capture tray
-- Each glitch is written as a 24-bit stereo WAV to `~/Music/Glitch Bitch Captures/<date>/`, named after the track, number and bar, for example `Drums - Glitch 007 - Bar 33.1.wav`.
+- Each glitch is written as a 24-bit stereo WAV to `~/Music/Glitch Witch Captures/<date>/`, named after the track, number and bar, for example `Drums - Glitch 007 - Bar 33.1.wav`.
 - **Pre** and **Post** (Off to 2 Bars) keep clean audio around the glitch for crossfades. Post-roll starts after tails like tape spin-up end.
 - Tiles show the clip's start (`BAR 33 . 1`), its length and a waveform. **Drag a tile onto a track** in your DAW. Right-click to reveal, remove or delete a clip. **Folder** opens the capture folder.
 - With Snap on, clips start exactly on a grid line. Drop one on a new track with your DAW's snap on, at the bar shown, and it lines up.
@@ -41,7 +41,7 @@ Pushing to `main` builds macOS (VST3, AU, Standalone; universal) and Windows (VS
 
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release --target GlitchBitch_VST3
+cmake --build build --config Release --target GlitchWitch_VST3
 ```
 
 `test/render_glitch.cpp` is a JUCE-free test of the DSP and capture logic (clicks, timing, snap, ring contents). CI runs it before every build.

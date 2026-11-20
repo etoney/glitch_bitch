@@ -1,4 +1,4 @@
-// GLITCH BITCH — factory presets (parameter id -> real value). Anything not listed is reset to its default.
+// GLITCH WITCH — factory presets (parameter id -> real value). Anything not listed is reset to its default.
 // Presets never touch THE BUTTON itself, the HOLD/LATCH mode, the capture settings or the output level.
 #pragma once
 #include <string>

@@ -1,4 +1,4 @@
-// GLITCH BITCH — DSP engine (self-contained, no JUCE).
+// GLITCH WITCH — DSP engine (self-contained, no JUCE).
 //
 // One big button fires every ARMED effect at once:
 //   Freeze -> Repeat -> Reverse -> Scatter -> Dive -> Crush -> Stutter -> [dry/wet] -> Tape Stop / Tape Start -> Output

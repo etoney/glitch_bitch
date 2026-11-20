@@ -1,4 +1,4 @@
-// GLITCH BITCH — editor. Same rusty Castle Danger hardware as Possessed, Chop Shop and Dominatrix.
+// GLITCH WITCH — editor. Same rusty Castle Danger hardware as Possessed, Chop Shop and Dominatrix.
 #include "PluginEditor.h"
 
 namespace pal
@@ -297,10 +297,10 @@ const juce::Colour bloodHot { 0xffff3b22 };
 
 //==============================================================================  (shared with Possessed)
 //==============================================================================
-void GlitchBitchEditor::refreshPresetBox()
+void GlitchWitchEditor::refreshPresetBox()
 {
     lastPresetVersion = proc.presetVersion.load();
-    userFiles = GlitchBitchProcessor::getUserPresets();
+    userFiles = GlitchWitchProcessor::getUserPresets();
     const auto current = proc.getCurrentPresetName();
 
     presetBox.clear (juce::dontSendNotification);
@@ -313,7 +313,7 @@ void GlitchBitchEditor::refreshPresetBox()
 
     int selected = 0;
     for (int i = 0; i < userFiles.size() && selected == 0; ++i)
-        if (userFiles[i] == GlitchBitchProcessor::fileForPresetName (current)) selected = kUserIdBase + i;
+        if (userFiles[i] == GlitchWitchProcessor::fileForPresetName (current)) selected = kUserIdBase + i;
     for (int i = 0; i < proc.getNumPrograms() && selected == 0; ++i)
         if (proc.getProgramName (i) == current) selected = i + 1;
     if (selected != 0) presetBox.setSelectedId (selected, juce::dontSendNotification);
@@ -321,7 +321,7 @@ void GlitchBitchEditor::refreshPresetBox()
     deleteButton.setEnabled (selected >= kUserIdBase);
 }
 
-void GlitchBitchEditor::stepPreset (int delta)
+void GlitchWitchEditor::stepPreset (int delta)
 {
     std::vector<int> ids;
     for (int i = 0; i < proc.getNumPrograms(); ++i) ids.push_back (i + 1);
@@ -332,10 +332,10 @@ void GlitchBitchEditor::stepPreset (int delta)
     presetBox.setSelectedId (ids[(size_t) (((pos + delta) % n + n) % n)], juce::sendNotificationSync);
 }
 
-void GlitchBitchEditor::showDialog (const juce::String& title, const juce::String& message, bool withTextField, const juce::String& initialText,
+void GlitchWitchEditor::showDialog (const juce::String& title, const juce::String& message, bool withTextField, const juce::String& initialText,
                                   juce::StringArray buttons, std::function<void (int, const juce::String&)> onResult)
 {
-    juce::Component::SafePointer<GlitchBitchEditor> safe (this);
+    juce::Component::SafePointer<GlitchWitchEditor> safe (this);
     dialog = std::make_unique<PresetDialog> (title, message, withTextField, initialText, buttons,
         [safe, onResult] (int index, const juce::String& text)
         {
@@ -351,21 +351,21 @@ void GlitchBitchEditor::showDialog (const juce::String& title, const juce::Strin
     dialog->setBounds (getLocalBounds());
 }
 
-void GlitchBitchEditor::showMessage (const juce::String& title, const juce::String& text)
+void GlitchWitchEditor::showMessage (const juce::String& title, const juce::String& text)
 {
     showDialog (title, text, false, {}, { "OK" }, {});
 }
 
-void GlitchBitchEditor::promptSave()
+void GlitchWitchEditor::promptSave()
 {
     const bool onUser = presetBox.getSelectedId() >= kUserIdBase;
-    juce::Component::SafePointer<GlitchBitchEditor> safe (this);
+    juce::Component::SafePointer<GlitchWitchEditor> safe (this);
     auto doSave = [safe] (const juce::String& name)
     {
         if (safe == nullptr) return;
         if (! safe->proc.saveUserPreset (name))
-            safe->showMessage ("Couldn't save preset", "Glitch Bitch couldn't write the preset file to:\n"
-                                                         + GlitchBitchProcessor::getUserPresetFolder().getFullPathName());
+            safe->showMessage ("Couldn't save preset", "Glitch Witch couldn't write the preset file to:\n"
+                                                         + GlitchWitchProcessor::getUserPresetFolder().getFullPathName());
         else safe->refreshPresetBox();
     };
 
@@ -381,7 +381,7 @@ void GlitchBitchEditor::promptSave()
                     safe->showMessage ("SAVE PRESET", "\"" + name + "\" is a factory preset name. Please choose another name.");
                     return;
                 }
-            if (GlitchBitchProcessor::fileForPresetName (name).existsAsFile())
+            if (GlitchWitchProcessor::fileForPresetName (name).existsAsFile())
             {
                 safe->showDialog ("REPLACE PRESET?", "A preset named \"" + name + "\" already exists. Replace it with the current settings?",
                                   false, {}, { "Replace", "Cancel" },
@@ -392,12 +392,12 @@ void GlitchBitchEditor::promptSave()
         });
 }
 
-void GlitchBitchEditor::confirmDelete()
+void GlitchWitchEditor::confirmDelete()
 {
     const int id = presetBox.getSelectedId();
     if (id < kUserIdBase || id - kUserIdBase >= userFiles.size()) return;
     const auto file = userFiles[id - kUserIdBase];
-    juce::Component::SafePointer<GlitchBitchEditor> safe (this);
+    juce::Component::SafePointer<GlitchWitchEditor> safe (this);
     showDialog ("DELETE PRESET?", "Delete \"" + file.getFileNameWithoutExtension() + "\"? This can't be undone.", false, {},
                 { "Delete", "Cancel" }, [safe, file] (int b, const juce::String&)
                 {
@@ -554,8 +554,8 @@ void GlitchScreen::update (float dt)
 {
     time += dt;
     const int w = proc.scopeWrite.load (std::memory_order_relaxed);
-    for (int i = 0; i < GlitchBitchProcessor::kScopeSize; ++i)
-        vals[(size_t) i] = proc.scope[(size_t) ((w + i) % GlitchBitchProcessor::kScopeSize)].load (std::memory_order_relaxed);
+    for (int i = 0; i < GlitchWitchProcessor::kScopeSize; ++i)
+        vals[(size_t) i] = proc.scope[(size_t) ((w + i) % GlitchWitchProcessor::kScopeSize)].load (std::memory_order_relaxed);
     active = proc.uiActive.load(); pending = proc.uiPending.load();
     tear += ((active ? 1.0f : 0.0f) - tear) * std::min (1.0f, dt * (active ? 18.0f : 4.0f));
     rgb = (rnd.nextFloat() < 0.02f + tear * 0.5f) ? rnd.nextFloat() : rgb * 0.6f;
@@ -611,7 +611,7 @@ void GlitchScreen::paint (juce::Graphics& g)
 
 //==============================================================================
 // THE BUTTON
-TheButton::TheButton (GlitchBitchProcessor& p) : proc (p)
+TheButton::TheButton (GlitchWitchProcessor& p) : proc (p)
 {
     param = proc.apvts.getParameter ("glitch");
     setTooltip ("THE BUTTON. Fires every ARMED effect. Hold mode: fires while held. Latch mode: click on, click off. "
@@ -871,7 +871,7 @@ void ClipTile::mouseDrag (const juce::MouseEvent& e)
 
 //==============================================================================
 // EDITOR
-GlitchBitchEditor::GlitchBitchEditor (GlitchBitchProcessor& p)
+GlitchWitchEditor::GlitchWitchEditor (GlitchWitchProcessor& p)
     : AudioProcessorEditor (&p), proc (p), screen (p), theButton (p)
 {
     setLookAndFeel (&lnf);
@@ -975,14 +975,14 @@ GlitchBitchEditor::GlitchBitchEditor (GlitchBitchProcessor& p)
     folderButton.setTooltip ("Open the folder the captures are saved in");
     folderButton.onClick = []
     {
-        auto root = GlitchBitchProcessor::getCaptureRoot();
+        auto root = GlitchWitchProcessor::getCaptureRoot();
         root.createDirectory();
         root.startAsProcess();
     };
     clearButton.setTooltip ("Empty the tray");
     clearButton.onClick = [this]
     {
-        juce::Component::SafePointer<GlitchBitchEditor> safe (this);
+        juce::Component::SafePointer<GlitchWitchEditor> safe (this);
         showDialog ("CLEAR THE TRAY?", "Remove every clip from the tray. Keep the WAV files on disk, or delete them too?", false, {},
                     { "Keep Files", "Delete Files", "Cancel" }, [safe] (int b, const juce::String&)
                     {
@@ -1001,7 +1001,7 @@ GlitchBitchEditor::GlitchBitchEditor (GlitchBitchProcessor& p)
         t.onRemove = [this] (const juce::File& f) { proc.removeClip (f, false); };
         t.onDelete = [this] (const juce::File& f)
         {
-            juce::Component::SafePointer<GlitchBitchEditor> safe (this);
+            juce::Component::SafePointer<GlitchWitchEditor> safe (this);
             showDialog ("DELETE CLIP?", "Delete \"" + f.getFileName() + "\" from disk? This can't be undone.", false, {}, { "Delete", "Cancel" },
                         [safe, f] (int b, const juce::String&) { if (safe != nullptr && b == 0) safe->proc.removeClip (f, true); });
         };
@@ -1013,9 +1013,9 @@ GlitchBitchEditor::GlitchBitchEditor (GlitchBitchProcessor& p)
     startTimerHz (30);
 }
 
-GlitchBitchEditor::~GlitchBitchEditor() { setLookAndFeel (nullptr); }
+GlitchWitchEditor::~GlitchWitchEditor() { setLookAndFeel (nullptr); }
 
-GlitchBitchEditor::Knob* GlitchBitchEditor::makeKnob (const juce::String& id, const juce::String& text)
+GlitchWitchEditor::Knob* GlitchWitchEditor::makeKnob (const juce::String& id, const juce::String& text)
 {
     auto k = std::make_unique<Knob>();
     k->slider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 70, 17);
@@ -1036,7 +1036,7 @@ GlitchBitchEditor::Knob* GlitchBitchEditor::makeKnob (const juce::String& id, co
     return knobs.back().get();
 }
 
-void GlitchBitchEditor::placeKnobs (const std::vector<Knob*>& ks, juce::Rectangle<int> area)
+void GlitchWitchEditor::placeKnobs (const std::vector<Knob*>& ks, juce::Rectangle<int> area)
 {
     if (ks.empty()) return;
     const int w = area.getWidth() / (int) ks.size();
@@ -1048,14 +1048,14 @@ void GlitchBitchEditor::placeKnobs (const std::vector<Knob*>& ks, juce::Rectangl
     }
 }
 
-void GlitchBitchEditor::refreshModeButtons()
+void GlitchWitchEditor::refreshModeButtons()
 {
     const bool latch = proc.apvts.getRawParameterValue ("buttonMode")->load() > 0.5f;
     holdButton.setToggleState (! latch, juce::dontSendNotification);
     latchButton.setToggleState (latch, juce::dontSendNotification);
 }
 
-void GlitchBitchEditor::resized()
+void GlitchWitchEditor::resized()
 {
     const int W = getWidth(), H = getHeight();
     screenWell = { 14, 10, 262, 100 };
@@ -1161,7 +1161,7 @@ void GlitchBitchEditor::resized()
     buildBackground();
 }
 
-void GlitchBitchEditor::buildBackground()
+void GlitchWitchEditor::buildBackground()
 {
     const float scale = 2.0f;
     const int W = getWidth(), H = getHeight();
@@ -1350,9 +1350,9 @@ void GlitchBitchEditor::buildBackground()
     auto plab = tex::distressedText ("PRESET", 120, 16, tex::stencil (14.0f), pal::paint, juce::Justification::centredLeft, scale, 0.2f, 7, 0.15f);
     g.drawImage (plab, juce::Rectangle<float> ((float) presetArea.getX() + 2, (float) presetArea.getY(), 120.0f, 16.0f));
 
-    // the logo: GLITCH BITCH in rusty blood red, dripping (drawn live so it can flicker and glitch)
+    // the logo: GLITCH WITCH in rusty blood red, dripping (drawn live so it can flicker and glitch)
     {
-        const juce::String word ("GLITCH BITCH");
+        const juce::String word ("GLITCH WITCH");
         const int lw = logoArea.getWidth(), lh = logoArea.getHeight() + 14;
         logoImage = juce::Image (juce::Image::ARGB, (int) ((float) lw * scale), (int) ((float) lh * scale), true);
         juce::Graphics lg (logoImage);
@@ -1392,7 +1392,7 @@ void GlitchBitchEditor::buildBackground()
     }
 }
 
-void GlitchBitchEditor::paint (juce::Graphics& g)
+void GlitchWitchEditor::paint (juce::Graphics& g)
 {
     if (background.isValid()) g.drawImage (background, getLocalBounds().toFloat());
     else g.fillAll (pal::ironDark);
@@ -1461,7 +1461,7 @@ void GlitchBitchEditor::paint (juce::Graphics& g)
                 "Right-click a clip for more.", trayHint, juce::Justification::centredLeft, true);
 }
 
-void GlitchBitchEditor::paintOverChildren (juce::Graphics& g)
+void GlitchWitchEditor::paintOverChildren (juce::Graphics& g)
 {
     if (meterArea.isEmpty()) return;
     auto m = meterArea.toFloat().reduced (2.0f, 4.0f);
@@ -1490,7 +1490,7 @@ void GlitchBitchEditor::paintOverChildren (juce::Graphics& g)
     drawBar (m.removeFromLeft (bw), outMeter, "OUT");
 }
 
-void GlitchBitchEditor::refreshTray()
+void GlitchWitchEditor::refreshTray()
 {
     lastClipsVersion = proc.clipsVersion.load();
     std::vector<CapturedClip> list;
@@ -1521,7 +1521,7 @@ void GlitchBitchEditor::refreshTray()
     }
 }
 
-void GlitchBitchEditor::timerCallback()
+void GlitchWitchEditor::timerCallback()
 {
     const float dt = 1.0f / 30.0f;
     const float in = proc.inLevel.exchange (0.0f), out = proc.outLevel.exchange (0.0f);
@@ -1565,8 +1565,8 @@ void GlitchBitchEditor::timerCallback()
     {
         lastErrors = e;
         if (dialog == nullptr)
-            showMessage ("CAPTURE PROBLEM", "Glitch Bitch couldn't write a capture file. Check that this folder exists and has free space:\n"
-                                            + GlitchBitchProcessor::getCaptureRoot().getFullPathName());
+            showMessage ("CAPTURE PROBLEM", "Glitch Witch couldn't write a capture file. Check that this folder exists and has free space:\n"
+                                            + GlitchWitchProcessor::getCaptureRoot().getFullPathName());
     }
     if (! meterArea.isEmpty()) repaint (meterArea);
 }

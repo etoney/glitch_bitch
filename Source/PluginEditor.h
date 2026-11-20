@@ -20,12 +20,12 @@ public:
 class GlitchScreen : public juce::Component
 {
 public:
-    explicit GlitchScreen (GlitchBitchProcessor& p) : proc (p) {}
+    explicit GlitchScreen (GlitchWitchProcessor& p) : proc (p) {}
     void update (float dt);
     void paint (juce::Graphics&) override;
 private:
-    GlitchBitchProcessor& proc;
-    std::array<float, GlitchBitchProcessor::kScopeSize> vals {};
+    GlitchWitchProcessor& proc;
+    std::array<float, GlitchWitchProcessor::kScopeSize> vals {};
     float time = 0, tear = 0, rgb = 0;
     bool active = false, pending = false;
     juce::Random rnd;
@@ -35,7 +35,7 @@ private:
 class TheButton : public juce::Component, public juce::SettableTooltipClient
 {
 public:
-    explicit TheButton (GlitchBitchProcessor& p);
+    explicit TheButton (GlitchWitchProcessor& p);
     void paint (juce::Graphics&) override;
     void mouseDown (const juce::MouseEvent&) override;
     void mouseUp (const juce::MouseEvent&) override;
@@ -44,7 +44,7 @@ public:
 private:
     bool isLatch() const;
     void setGlitch (bool on);
-    GlitchBitchProcessor& proc;
+    GlitchWitchProcessor& proc;
     juce::RangedAudioParameter* param = nullptr;
     bool down = false, lit = false, pending = false;
     float glow = 0, pulse = 0;
@@ -114,11 +114,11 @@ private:
     juce::Rectangle<int> panel;
 };
 
-class GlitchBitchEditor : public juce::AudioProcessorEditor, private juce::Timer
+class GlitchWitchEditor : public juce::AudioProcessorEditor, private juce::Timer
 {
 public:
-    explicit GlitchBitchEditor (GlitchBitchProcessor&);
-    ~GlitchBitchEditor() override;
+    explicit GlitchWitchEditor (GlitchWitchProcessor&);
+    ~GlitchWitchEditor() override;
     void paint (juce::Graphics&) override;
     void paintOverChildren (juce::Graphics&) override;
     void resized() override;
@@ -147,7 +147,7 @@ private:
     void refreshTray();
     void refreshModeButtons();
 
-    GlitchBitchProcessor& proc;
+    GlitchWitchProcessor& proc;
     GlitchLookAndFeel lnf;
     std::vector<std::unique_ptr<Knob>> knobs;
 
@@ -200,5 +200,5 @@ private:
     float flicker = 0.0f, inMeter = 0.0f, outMeter = 0.0f, logoGlitch = 0.0f;
     int logoSeed = 0;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GlitchBitchEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GlitchWitchEditor)
 };

@@ -20,7 +20,7 @@ int main (int argc, char** argv)
 {
     juce::ScopedJuceInitialiser_GUI init;
     const juce::File out (argc > 1 ? argv[1] : "/tmp");
-    GlitchBitchProcessor proc;
+    GlitchWitchProcessor proc;
     proc.setPlayConfigDetails (2, 2, 48000, 512);
     proc.prepareToPlay (48000, 512);
     FakePlayHead ph; proc.setPlayHead (&ph);

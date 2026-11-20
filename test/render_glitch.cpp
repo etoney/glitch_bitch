@@ -1,4 +1,4 @@
-// Offline test for the Glitch Bitch engine: behaviour checks + demo renders (no JUCE).
+// Offline test for the Glitch Witch engine: behaviour checks + demo renders (no JUCE).
 //   render_glitch [out_dir]
 #include "GlitchEngine.h"
 #include <cstdio>

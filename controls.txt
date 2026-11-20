@@ -1,9 +1,9 @@
 ===============================================================================
-  GLITCH BITCH  //  CONTROLS QUICK REFERENCE
+  GLITCH WITCH  //  CONTROLS QUICK REFERENCE
   Castle Danger Music Company  //  Press. Hold. Destroy.
 ===============================================================================
 
-Glitch Bitch is an insert effect. Put it on any track (drums, vocals, a bus,
+Glitch Witch is an insert effect. Put it on any track (drums, vocals, a bus,
 the whole mix) like you would an EQ or a reverb.
 
 The idea: ARM the effects you want, then hit THE BUTTON. Everything armed
@@ -14,7 +14,7 @@ drag it onto its own track.
 Tip: double-click a value readout under a knob to type an exact number.
 Double-click a knob to reset it.
 
-No latency: Glitch Bitch doesn't delay your audio.
+No latency: Glitch Witch doesn't delay your audio.
 
 
 -------------------------------------------------------------------------------
@@ -38,9 +38,9 @@ HEADER
       HOLD/LATCH mode, the capture settings or the OUTPUT level.
 
   SAVE PRESET... / DELETE
-      User presets are .glitchbitch files you can back up or share:
-        macOS:   ~/Library/Application Support/Castle Danger/Glitch Bitch/Presets/
-        Windows: %APPDATA%\Castle Danger\Glitch Bitch\Presets\
+      User presets are .glitchwitch files you can back up or share:
+        macOS:   ~/Library/Application Support/Castle Danger/Glitch Witch/Presets/
+        Windows: %APPDATA%\Castle Danger\Glitch Witch\Presets\
 
 
 -------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ this order:
 ===============================================================================
 CAPTURE TRAY  (bottom)
 ===============================================================================
-Every time THE BUTTON fires, Glitch Bitch records what comes out of it as a
+Every time THE BUTTON fires, Glitch Witch records what comes out of it as a
 24-bit WAV file and drops it in the tray. The newest clip is on the left.
 A red CAPTURING tile shows while a clip is being recorded.
 
@@ -163,8 +163,8 @@ A red CAPTURING tile shows while a clip is being recorded.
              The extra audio gives you room to crossfade the clip with the
              original track.
   FOLDER     Opens the folder the WAV files are saved in:
-               macOS:   ~/Music/Glitch Bitch Captures/<date>/
-               Windows: Music\Glitch Bitch Captures\<date>\
+               macOS:   ~/Music/Glitch Witch Captures/<date>/
+               Windows: Music\Glitch Witch Captures\<date>\
              Files are named after the track, e.g.
                "Drums - Glitch 007 - Bar 33.1.wav"
              (the track name shows up in DAWs that share it with plugins).
@@ -186,7 +186,7 @@ A red CAPTURING tile shows while a clip is being recorded.
 -------------------------------------------------------------------------------
 BOUNCING GLITCHES TO A NEW TRACK  (Fender Studio Pro)
 -------------------------------------------------------------------------------
-  1. Put Glitch Bitch on the track. Arm your effects, set SNAP (1/4 is a
+  1. Put Glitch Witch on the track. Arm your effects, set SNAP (1/4 is a
      good start) and set PRE and POST (1/4 each is a good start).
   2. Play the song and hit THE BUTTON where you want glitches. Or record
      the button as automation first and let playback do the pressing.
@@ -194,9 +194,9 @@ BOUNCING GLITCHES TO A NEW TRACK  (Fender Studio Pro)
      starts on.
   4. Make a new audio track. Turn Snap ON in Studio Pro.
   5. Drag the clip from the tray onto the new track, at the bar and beat
-     on its tile. With SNAP and PRE both on in Glitch Bitch, the clip starts
+     on its tile. With SNAP and PRE both on in Glitch Witch, the clip starts
      exactly on that grid line, so it snaps into place.
-  6. On the original track, turn the glitch off (bypass Glitch Bitch, or
+  6. On the original track, turn the glitch off (bypass Glitch Witch, or
      delete the button automation) and cut or fade out the original audio
      under the glitch. Use the PRE/POST overlap for crossfades.
 

@@ -20,7 +20,7 @@ juce::String CapturedClip::positionText() const
 }
 
 //==============================================================================
-APVTS::ParameterLayout GlitchBitchProcessor::createLayout()
+APVTS::ParameterLayout GlitchWitchProcessor::createLayout()
 {
     using namespace juce;
     std::vector<std::unique_ptr<RangedAudioParameter>> ps;
@@ -117,11 +117,11 @@ APVTS::ParameterLayout GlitchBitchProcessor::createLayout()
     return { ps.begin(), ps.end() };
 }
 
-GlitchBitchProcessor::GlitchBitchProcessor()
+GlitchWitchProcessor::GlitchWitchProcessor()
     : AudioProcessor (BusesProperties()
                           .withInput ("Input", juce::AudioChannelSet::stereo(), true)
                           .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
-      apvts (*this, nullptr, "GLITCHBITCH", createLayout())
+      apvts (*this, nullptr, "GLITCHWITCH", createLayout())
 {
     for (int i = 0; i < 16; ++i) stepPtrs[(size_t) i] = apvts.getRawParameterValue ("step" + juce::String (i));
     for (auto& s : scope) s.store (0.0f);
@@ -130,12 +130,12 @@ GlitchBitchProcessor::GlitchBitchProcessor()
     writer.startThread (juce::Thread::Priority::low);
 }
 
-GlitchBitchProcessor::~GlitchBitchProcessor()
+GlitchWitchProcessor::~GlitchWitchProcessor()
 {
     writer.stopThread (4000);
 }
 
-bool GlitchBitchProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool GlitchWitchProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
     const auto& out = layouts.getMainOutputChannelSet();
     const auto& in = layouts.getMainInputChannelSet();
@@ -143,12 +143,12 @@ bool GlitchBitchProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
     return in == out || (in == juce::AudioChannelSet::mono() && out == juce::AudioChannelSet::stereo());
 }
 
-bool GlitchBitchProcessor::isKeptOnPresetLoad (const juce::String& id)
+bool GlitchWitchProcessor::isKeptOnPresetLoad (const juce::String& id)
 {
     return id == "glitch" || id == "buttonMode" || id == "outputDb" || id == "captureOn" || id == "preRoll" || id == "postRoll";
 }
 
-void GlitchBitchProcessor::pullParams()
+void GlitchWitchProcessor::pullParams()
 {
     auto& p = engine.p;
     auto on  = [this] (const char* id) { return apvts.getRawParameterValue (id)->load() > 0.5f; };
@@ -172,7 +172,7 @@ void GlitchBitchProcessor::pullParams()
     p.captureOn = on ("captureOn"); p.preRoll = idx ("preRoll"); p.postRoll = idx ("postRoll");
 }
 
-void GlitchBitchProcessor::prepareToPlay (double sampleRate, int)
+void GlitchWitchProcessor::prepareToPlay (double sampleRate, int)
 {
     // the writer reads the capture ring, so it has to stop while the ring is rebuilt
     writer.stopThread (4000);
@@ -183,7 +183,7 @@ void GlitchBitchProcessor::prepareToPlay (double sampleRate, int)
     setLatencySamples (0);
 }
 
-void GlitchBitchProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
+void GlitchWitchProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
 {
     juce::ScopedNoDenormals noDenormals;
     pullParams();
@@ -240,14 +240,14 @@ void GlitchBitchProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
 }
 
 //==============================================================================
-int GlitchBitchProcessor::getNumPrograms() { return (int) gb::factoryPresets().size(); }
+int GlitchWitchProcessor::getNumPrograms() { return (int) gb::factoryPresets().size(); }
 
-const juce::String GlitchBitchProcessor::getProgramName (int index)
+const juce::String GlitchWitchProcessor::getProgramName (int index)
 {
     return juce::isPositiveAndBelow (index, getNumPrograms()) ? juce::String (gb::factoryPresets()[(size_t) index].name) : juce::String();
 }
 
-void GlitchBitchProcessor::setCurrentProgram (int index)
+void GlitchWitchProcessor::setCurrentProgram (int index)
 {
     if (! juce::isPositiveAndBelow (index, getNumPrograms())) return;
     currentProgram = index;
@@ -262,35 +262,35 @@ void GlitchBitchProcessor::setCurrentProgram (int index)
     ++presetVersion;
 }
 
-juce::File GlitchBitchProcessor::getUserPresetFolder()
+juce::File GlitchWitchProcessor::getUserPresetFolder()
 {
     auto base = juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory); // ~/Library on macOS, %APPDATA% on Windows
    #if JUCE_MAC
     base = base.getChildFile ("Application Support");
    #endif
-    return base.getChildFile ("Castle Danger").getChildFile ("Glitch Bitch").getChildFile ("Presets");
+    return base.getChildFile ("Castle Danger").getChildFile ("Glitch Witch").getChildFile ("Presets");
 }
 
-juce::Array<juce::File> GlitchBitchProcessor::getUserPresets()
+juce::Array<juce::File> GlitchWitchProcessor::getUserPresets()
 {
-    auto files = getUserPresetFolder().findChildFiles (juce::File::findFiles, false, "*.glitchbitch");
+    auto files = getUserPresetFolder().findChildFiles (juce::File::findFiles, false, "*.glitchwitch");
     std::sort (files.begin(), files.end(), [] (const juce::File& a, const juce::File& b)
                { return a.getFileNameWithoutExtension().compareNatural (b.getFileNameWithoutExtension()) < 0; });
     return files;
 }
 
-juce::File GlitchBitchProcessor::fileForPresetName (const juce::String& name)
+juce::File GlitchWitchProcessor::fileForPresetName (const juce::String& name)
 {
-    return getUserPresetFolder().getChildFile (juce::File::createLegalFileName (name.trim()) + ".glitchbitch");
+    return getUserPresetFolder().getChildFile (juce::File::createLegalFileName (name.trim()) + ".glitchwitch");
 }
 
-bool GlitchBitchProcessor::saveUserPreset (const juce::String& rawName)
+bool GlitchWitchProcessor::saveUserPreset (const juce::String& rawName)
 {
     const auto name = rawName.trim();
     if (name.isEmpty()) return false;
     const auto file = fileForPresetName (name);
     if (! file.getParentDirectory().createDirectory()) return false;
-    juce::XmlElement xml ("GlitchBitchPreset");
+    juce::XmlElement xml ("GlitchWitchPreset");
     xml.setAttribute ("name", name);
     xml.setAttribute ("pluginVersion", JucePlugin_VersionString);
     for (auto* p : getParameters())
@@ -307,10 +307,10 @@ bool GlitchBitchProcessor::saveUserPreset (const juce::String& rawName)
     return true;
 }
 
-bool GlitchBitchProcessor::loadUserPreset (const juce::File& file)
+bool GlitchWitchProcessor::loadUserPreset (const juce::File& file)
 {
     auto xml = juce::XmlDocument::parse (file);
-    if (xml == nullptr || ! xml->hasTagName ("GlitchBitchPreset")) return false;
+    if (xml == nullptr || ! xml->hasTagName ("GlitchWitchPreset")) return false;
     for (auto* p : getParameters())
         if (auto* rp = dynamic_cast<juce::RangedAudioParameter*> (p))
             if (! isKeptOnPresetLoad (rp->getParameterID()))
@@ -328,12 +328,12 @@ bool GlitchBitchProcessor::loadUserPreset (const juce::File& file)
 }
 
 //==============================================================================
-juce::File GlitchBitchProcessor::getCaptureRoot()
+juce::File GlitchWitchProcessor::getCaptureRoot()
 {
-    return juce::File::getSpecialLocation (juce::File::userMusicDirectory).getChildFile ("Glitch Bitch Captures");
+    return juce::File::getSpecialLocation (juce::File::userMusicDirectory).getChildFile ("Glitch Witch Captures");
 }
 
-void GlitchBitchProcessor::addClip (CapturedClip&& c)
+void GlitchWitchProcessor::addClip (CapturedClip&& c)
 {
     {
         const juce::ScopedLock sl (clipLock);
@@ -343,7 +343,7 @@ void GlitchBitchProcessor::addClip (CapturedClip&& c)
     ++clipsVersion;
 }
 
-void GlitchBitchProcessor::removeClip (const juce::File& f, bool deleteFile)
+void GlitchWitchProcessor::removeClip (const juce::File& f, bool deleteFile)
 {
     {
         const juce::ScopedLock sl (clipLock);
@@ -353,7 +353,7 @@ void GlitchBitchProcessor::removeClip (const juce::File& f, bool deleteFile)
     ++clipsVersion;
 }
 
-void GlitchBitchProcessor::clearClips (bool deleteFiles)
+void GlitchWitchProcessor::clearClips (bool deleteFiles)
 {
     std::vector<CapturedClip> old;
     { const juce::ScopedLock sl (clipLock); old.swap (clips); }
@@ -361,13 +361,13 @@ void GlitchBitchProcessor::clearClips (bool deleteFiles)
     ++clipsVersion;
 }
 
-void GlitchBitchProcessor::updateTrackProperties (const TrackProperties& props)
+void GlitchWitchProcessor::updateTrackProperties (const TrackProperties& props)
 {
     const juce::ScopedLock sl (nameLock);
     trackName = props.name.value_or (juce::String());
 }
 
-void GlitchBitchProcessor::getStateInformation (juce::MemoryBlock& destData)
+void GlitchWitchProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = apvts.copyState();
     state.setProperty ("program", currentProgram, nullptr);
@@ -393,7 +393,7 @@ void GlitchBitchProcessor::getStateInformation (juce::MemoryBlock& destData)
     if (auto xml = state.createXml()) copyXmlToBinary (*xml, destData);
 }
 
-void GlitchBitchProcessor::setStateInformation (const void* data, int sizeInBytes)
+void GlitchWitchProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     auto xml = getXmlFromBinary (data, sizeInBytes);
     if (xml == nullptr || ! xml->hasTagName (apvts.state.getType())) return;
@@ -478,10 +478,10 @@ void CaptureWriter::run()
 
 juce::File CaptureWriter::makeFileFor (const gb::CaptureEvent& e)
 {
-    auto folder = GlitchBitchProcessor::getCaptureRoot().getChildFile (juce::Time::getCurrentTime().formatted ("%Y-%m-%d"));
+    auto folder = GlitchWitchProcessor::getCaptureRoot().getChildFile (juce::Time::getCurrentTime().formatted ("%Y-%m-%d"));
     folder.createDirectory();
     auto track = owner.getTrackName().trim();
-    if (track.isEmpty()) track = "Glitch Bitch";
+    if (track.isEmpty()) track = "Glitch Witch";
     CapturedClip tmp; tmp.playing = e.playing; tmp.ppq = e.ppq; tmp.num = e.num; tmp.den = e.den;
     juce::String pos = tmp.positionText().replace ("BAR ", "Bar ").replace (" . ", ".").replace (" +", " ").replace ("/16", "-16");
     if (! e.playing) pos = juce::Time::getCurrentTime().formatted ("%H%M%S");
@@ -501,7 +501,7 @@ void CaptureWriter::startClip (const gb::CaptureEvent& e)
     if (! static_cast<juce::FileOutputStream*> (out.get())->openedOk()) { ++owner.captureErrors; open = false; return; }
 
     // Broadcast WAV timestamp: DAWs that read it (Pro Tools Spot, Reaper, Cubase/Nuendo...) can put the clip back where it came from
-    const auto bwav = juce::WavAudioFormat::createBWAVMetadata ("Glitch Bitch capture", "Castle Danger Glitch Bitch",
+    const auto bwav = juce::WavAudioFormat::createBWAVMetadata ("Glitch Witch capture", "Castle Danger Glitch Witch",
                                                                current.file.getFileNameWithoutExtension().substring (0, 32),
                                                                juce::Time::getCurrentTime(), (juce::int64) std::max<int64_t> (0, e.timeline), {});
     auto opts = juce::AudioFormatWriterOptions().withSampleRate (sr).withNumChannels (2).withBitsPerSample (24);
@@ -560,6 +560,6 @@ void CaptureWriter::loadExisting()
     }
 }
 
-juce::AudioProcessorEditor* GlitchBitchProcessor::createEditor() { return new GlitchBitchEditor (*this); }
+juce::AudioProcessorEditor* GlitchWitchProcessor::createEditor() { return new GlitchWitchEditor (*this); }
 
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new GlitchBitchProcessor(); }
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new GlitchWitchProcessor(); }
